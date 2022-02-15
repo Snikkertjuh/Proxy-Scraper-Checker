@@ -8,7 +8,17 @@ def main():
     with open("proxies.txt", "w") as file:
         for line in open(f"{os.getenv('TEMP')}\\proxies.txt", "r"):
             proxy = line.strip("\n")
-            file.write(f"{proxy} \n")
+            proxydict = {
+                "socks5": f"socks5://{proxy}"
+            }
+            try:
+                print(proxydict)
+                request = requests.get("https://api.ipify.org", proxies=proxydict, timeout=10)
+                print(request.text)
+                file.write(proxy)
+            except Exception as error:
+                print(error)
+                pass
 
 if __name__ == "__main__":
     main()
